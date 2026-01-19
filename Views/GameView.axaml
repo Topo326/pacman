@@ -1,0 +1,66 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:PacmanGame.ViewModels"
+             xmlns:conv="using:PacmanGame.Views.Converters"
+             xmlns:m="using:PacmanGame.Models"
+             x:Class="PacmanGame.Views.GameView"
+             x:DataType="vm:GameViewModel">
+
+  <UserControl.Resources>
+    <conv:MultiplyConverter x:Key="Mul" />
+  </UserControl.Resources>
+
+  <Grid RowDefinitions="Auto, *" Background="#000">
+    <StackPanel Orientation="Horizontal" Spacing="10" Margin="8">
+      <TextBlock Text="Score:" Foreground="White" VerticalAlignment="Center"/>
+      <TextBlock Text="{Binding Score}" Foreground="White" VerticalAlignment="Center"/>
+      <Button Content="Start" Command="{Binding StartGameCommand}"/>
+      <Button Content="Stop" Command="{Binding StopGameCommand}"/>
+      <Button Content="Save Score" Command="{Binding AddScoreAndStopCommand}"/>
+    </StackPanel>
+
+    <Border Grid.Row="1" BorderBrush="#444" BorderThickness="2" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="8">
+      <Canvas Width="352" Height="224" Background="#000">
+        <!-- Render Maze -->
+        <ItemsControl ItemsSource="{Binding Map}">
+          <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+              <Canvas />
+            </ItemsPanelTemplate>
+          </ItemsControl.ItemsPanel>
+          <ItemsControl.ItemTemplate>
+            <DataTemplate DataType="m:Tile">
+              <Image Width="32" Height="32"
+                     Source="{Binding Sprite}"
+                     Canvas.Left="{Binding X, Converter={StaticResource Mul}, ConverterParameter=32}"
+                     Canvas.Top="{Binding Y, Converter={StaticResource Mul}, ConverterParameter=32}" />
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <!-- Render Ghosts -->
+        <ItemsControl ItemsSource="{Binding GhostData}">
+          <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+              <Canvas />
+            </ItemsPanelTemplate>
+          </ItemsControl.ItemsPanel>
+          <ItemsControl.ItemTemplate>
+            <DataTemplate>
+              <Image Width="28" Height="28"
+                     Source="{Binding Sprite}"
+                     Canvas.Left="{Binding Pos.X, Converter={StaticResource Mul}, ConverterParameter=20}"
+                     Canvas.Top="{Binding Pos.Y, Converter={StaticResource Mul}, ConverterParameter=20}" />
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <!-- Render Player -->
+        <Image Width="28" Height="28"
+               Source="{Binding PlayerSprite}"
+               Canvas.Left="{Binding PlayerX, Converter={StaticResource Mul}, ConverterParameter=32}"
+               Canvas.Top="{Binding PlayerY, Converter={StaticResource Mul}, ConverterParameter=32}" />
+      </Canvas>
+    </Border>
+  </Grid>
+</UserControl>

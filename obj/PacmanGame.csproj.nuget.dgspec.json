@@ -1,0 +1,98 @@
+{
+  "format": 1,
+  "restore": {
+    "/home/topo/Desktop/cshar/Uni/capstone/capstone_leonardo/PacmanGame/PacmanGame.csproj": {}
+  },
+  "projects": {
+    "/home/topo/Desktop/cshar/Uni/capstone/capstone_leonardo/PacmanGame/PacmanGame.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/topo/Desktop/cshar/Uni/capstone/capstone_leonardo/PacmanGame/PacmanGame.csproj",
+        "projectName": "PacmanGame",
+        "projectPath": "/home/topo/Desktop/cshar/Uni/capstone/capstone_leonardo/PacmanGame/PacmanGame.csproj",
+        "packagesPath": "/home/topo/.nuget/packages/",
+        "outputPath": "/home/topo/Desktop/cshar/Uni/capstone/capstone_leonardo/PacmanGame/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/topo/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net9.0"
+        ],
+        "sources": {
+          "/usr/lib/dotnet/library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net9.0": {
+            "targetAlias": "net9.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.100"
+      },
+      "frameworks": {
+        "net9.0": {
+          "targetAlias": "net9.0",
+          "dependencies": {
+            "Avalonia": {
+              "target": "Package",
+              "version": "[11.3.10, )"
+            },
+            "Avalonia.Desktop": {
+              "target": "Package",
+              "version": "[11.3.10, )"
+            },
+            "Avalonia.Diagnostics": {
+              "target": "Package",
+              "version": "[11.3.10, )"
+            },
+            "Avalonia.Fonts.Inter": {
+              "target": "Package",
+              "version": "[11.3.10, )"
+            },
+            "Avalonia.ReactiveUI": {
+              "target": "Package",
+              "version": "[11.3.8, )"
+            },
+            "Avalonia.Themes.Fluent": {
+              "target": "Package",
+              "version": "[11.3.10, )"
+            },
+            "CommunityToolkit.Mvvm": {
+              "target": "Package",
+              "version": "[8.2.1, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/9.0.112/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
