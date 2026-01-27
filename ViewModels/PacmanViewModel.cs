@@ -84,7 +84,6 @@ public partial class PacmanViewModel : ViewModelBase
         }
     }
     
-    // Verifica colisiones usando offset 0.9999 para detectar bordes de tiles
     private bool CheckCollisions(int[,] gameBoard)
     {
         int rows = gameBoard.GetLength(0);

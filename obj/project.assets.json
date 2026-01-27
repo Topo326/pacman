@@ -1785,11 +1785,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/topo/Desktop/cshar/Uni/capstone/capstone_leonardo/PacmanGame/PacmanGame.csproj",
+      "projectUniqueName": "/home/topo/Desktop/cshar/Uni/capstone/pacman/PacmanGame.csproj",
       "projectName": "PacmanGame",
-      "projectPath": "/home/topo/Desktop/cshar/Uni/capstone/capstone_leonardo/PacmanGame/PacmanGame.csproj",
+      "projectPath": "/home/topo/Desktop/cshar/Uni/capstone/pacman/PacmanGame.csproj",
       "packagesPath": "/home/topo/.nuget/packages/",
-      "outputPath": "/home/topo/Desktop/cshar/Uni/capstone/capstone_leonardo/PacmanGame/obj/",
+      "outputPath": "/home/topo/Desktop/cshar/Uni/capstone/pacman/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/topo/.nuget/NuGet/NuGet.Config"

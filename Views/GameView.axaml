@@ -21,7 +21,6 @@
 
     <Border Grid.Row="1" BorderBrush="#444" BorderThickness="2" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="8">
       <Canvas Width="352" Height="224" Background="#000">
-        <!-- Render Maze -->
         <ItemsControl ItemsSource="{Binding Map}">
           <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
@@ -37,8 +36,6 @@
             </DataTemplate>
           </ItemsControl.ItemTemplate>
         </ItemsControl>
-
-        <!-- Render Ghosts -->
         <ItemsControl ItemsSource="{Binding GhostData}">
           <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
@@ -54,8 +51,6 @@
             </DataTemplate>
           </ItemsControl.ItemTemplate>
         </ItemsControl>
-
-        <!-- Render Player -->
         <Image Width="28" Height="28"
                Source="{Binding PlayerSprite}"
                Canvas.Left="{Binding PlayerX, Converter={StaticResource Mul}, ConverterParameter=32}"

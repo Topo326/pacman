@@ -1,18 +1,15 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:PacmanGame.ViewModels"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="PacmanGame.Views.MainWindow"
-        x:DataType="vm:MainWindowViewModel"
-        Title="PacmanGame">
+        Icon="/Assets/avalonia-logo.ico"
+        Title="Pacman Capstone Project"
+        Width="800" Height="900"
+        WindowStartupLocation="CenterScreen">
 
     <Design.DataContext>
-        <vm:MainWindowViewModel />
+        <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-    <Grid>
-        <ContentControl Content="{Binding CurrentViewModel}" />
-    </Grid>
+    <TransitioningContentControl Content="{Binding CurrentView}" />
 </Window>

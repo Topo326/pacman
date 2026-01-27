@@ -1,38 +1,24 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:PacmanGame.ViewModels"
-             x:Class="PacmanGame.Views.MenuView"
-             x:DataType="vm:MenuViewModel">
-
-    <Grid Background="#000000"> 
-        <StackPanel HorizontalAlignment="Center" 
-                    VerticalAlignment="Center" 
-                    Spacing="15">
-
-            <TextBlock Text="PAC-MAN" 
-                       FontSize="60" 
-                       Foreground="Yellow" 
-                       FontWeight="Bold"
-                       HorizontalAlignment="Center"
-                       Margin="0,0,0,40"/>
-
-            <Button Content="COMENZAR JUEGO" 
-                    Command="{Binding StartGameCommand}" 
-                    Width="200"
-                    HorizontalContentAlignment="Center"/>
-
-            <Button Content="SCORE BOARD" 
-                    Width="200"
-                    HorizontalContentAlignment="Center"/>
-
-            <Button Content="SILENCIAR MUSICA" 
-                    Width="200"
-                    HorizontalContentAlignment="Center"/>
-
-            <Button Content="SALIR" 
-                    Width="200"
-                    HorizontalContentAlignment="Center"/>
-                    
-        </StackPanel>
-    </Grid>
+             x:DataType="vm:MenuViewModel"
+             x:Class="PacmanGame.Views.MenuView">
+    
+    <StackPanel Spacing="20" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <TextBlock Text="PAC-MAN" 
+                   FontSize="40" 
+                   FontWeight="Bold"
+                   HorizontalAlignment="Center" 
+                   Foreground="Yellow"/>
+        
+        <Button Content="START GAME" 
+                Command="{Binding StartGameCommand}" 
+                HorizontalAlignment="Stretch" 
+                HorizontalContentAlignment="Center"/>
+                
+        <Button Content="EXIT" 
+                Command="{Binding ExitCommand}" 
+                HorizontalAlignment="Stretch" 
+                HorizontalContentAlignment="Center"/>
+    </StackPanel>
 </UserControl>

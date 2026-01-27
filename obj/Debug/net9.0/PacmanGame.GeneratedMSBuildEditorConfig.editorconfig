@@ -15,23 +15,23 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = PacmanGame
-build_property.ProjectDir = /home/topo/Desktop/cshar/Uni/capstone/capstone_leonardo/PacmanGame/
+build_property.ProjectDir = /home/topo/Desktop/cshar/Uni/capstone/pacman/
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.EffectiveAnalysisLevelStyle = 9.0
 build_property.EnableCodeStyleSeverity = 
 
-[/home/topo/Desktop/cshar/Uni/capstone/capstone_leonardo/PacmanGame/App.axaml]
+[/home/topo/Desktop/cshar/Uni/capstone/pacman/App.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[/home/topo/Desktop/cshar/Uni/capstone/capstone_leonardo/PacmanGame/Views/GameView.axaml]
+[/home/topo/Desktop/cshar/Uni/capstone/pacman/Views/GameView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[/home/topo/Desktop/cshar/Uni/capstone/capstone_leonardo/PacmanGame/Views/MainView.axaml]
+[/home/topo/Desktop/cshar/Uni/capstone/pacman/Views/MainView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[/home/topo/Desktop/cshar/Uni/capstone/capstone_leonardo/PacmanGame/Views/MainWindow.axaml]
+[/home/topo/Desktop/cshar/Uni/capstone/pacman/Views/MainWindow.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[/home/topo/Desktop/cshar/Uni/capstone/capstone_leonardo/PacmanGame/Views/PacmanGameView.axaml]
+[/home/topo/Desktop/cshar/Uni/capstone/pacman/Views/PacmanGameView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml

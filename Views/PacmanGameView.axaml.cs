@@ -1,5 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Interactivity;
+using PacmanGame.ViewModels;
 
 namespace PacmanGame.Views;
 
@@ -9,20 +11,19 @@ public partial class PacmanGameView : UserControl
     {
         InitializeComponent();
     }
-
-    private void Canvas_KeyDown(object? sender, KeyEventArgs e)
+    protected override void OnLoaded(RoutedEventArgs e)
     {
-        if (DataContext is ViewModels.PacmanGameViewModel vm)
-        {
-            vm.OnKeyDown(e);
-        }
+        base.OnLoaded(e);
+        Focus();
     }
 
-    private void Canvas_Loaded(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    protected override void OnKeyDown(KeyEventArgs e)
     {
-        if (sender is Canvas canvas)
+        base.OnKeyDown(e);
+
+        if (DataContext is PacmanGameViewModel vm)
         {
-            canvas.Focus();
+            vm.HandleInput(e.Key);
         }
     }
 }

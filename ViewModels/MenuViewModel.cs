@@ -1,16 +1,26 @@
 using CommunityToolkit.Mvvm.Input;
 
 namespace PacmanGame.ViewModels;
-partial class MenuViewModel : ViewModelBase
+
+public partial class MenuViewModel : ViewModelBase
 {
-    private readonly MainWindowViewModel _mainVM;
-    public MenuViewModel(MainWindowViewModel mainVM)
+    private readonly MainWindowViewModel _mainViewModel;
+
+    public MenuViewModel(MainWindowViewModel mainViewModel)
     {
-        _mainVM = mainVM;
+        _mainViewModel = mainViewModel;
     }
+
     [RelayCommand]
-    private void StartGame()
+    public void StartGame()
     {
-        _mainVM.GoToPacmanGame();
+        _mainViewModel.StartGame();
     }
+
+    [RelayCommand]
+    public void ExitGame()
+    {
+        System.Environment.Exit(0);
+    }
+    
 }
