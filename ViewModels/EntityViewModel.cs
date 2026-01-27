@@ -17,7 +17,7 @@ public partial class EntityViewModel : ViewModelBase
 
     public void LoadSprite(string assetPath)
     {
-        var uri = new Uri(assetPath);
+        var uri = new Uri($"avares://PacmanGame/Assets/{assetPath}");
         Sprite = new Bitmap(AssetLoader.Open(uri));
     }
     

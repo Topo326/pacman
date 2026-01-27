@@ -18,7 +18,7 @@ public partial class MenuViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    public void ExitGame()
+    public void Exit()
     {
         System.Environment.Exit(0);
     }
