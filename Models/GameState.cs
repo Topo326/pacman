@@ -18,8 +18,8 @@ public class GameState
     public double FrightenedTimeLeft { get; set; }
     
     // Modos cíclicos
-    public bool IsScatterMode { get; set; } = true;
-    public double ModeTimeLeft { get; set; } = GameConstants.ScatterDurationSeconds;
+    public bool IsScatterMode { get; set; } = false;
+    public double ModeTimeLeft { get; set; } = GameConstants.ChaseDurationSeconds;
     
     // Timer para animación de muerte
     public double DeathTimer { get; set; }
@@ -51,8 +51,8 @@ public class GameState
         ElapsedSeconds = 0;
         IsFrightenedMode = false;
         FrightenedTimeLeft = 0;
-        IsScatterMode = true;
-        ModeTimeLeft = GameConstants.ScatterDurationSeconds;
+        IsScatterMode = false;
+        ModeTimeLeft = GameConstants.ChaseDurationSeconds;
     }
 
     /// <summary>

@@ -9,7 +9,7 @@ public class Player
 {
     public double X { get; set; }
     public double Y { get; set; }
-    public int Speed { get; set; } = GameConstants.PacmanSpeed;
+    public double Speed { get; set; } = GameConstants.PacmanSpeed;
     public bool IsDead { get; set; }
     public MovementDirection CurrentDirection { get; private set; } = MovementDirection.None;
     public MovementDirection RequestedDirection { get; set; } = MovementDirection.None;

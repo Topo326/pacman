@@ -6,9 +6,9 @@ namespace PacmanGame.Models;
 public static class GameConstants
 {
     public const int TileSize = 26;
-    public const int PacmanSpeed = 3;
-    public const int GhostSpeed = 2;
-    public const int GhostFrightenedSpeed = 1;
+    public const double PacmanSpeed = 2.5;
+    public const double GhostSpeed = 2.0;
+    public const double GhostFrightenedSpeed = 1.8;
     public const int PowerPillDurationSeconds = 10;
     public const int DotScore = 10;
     public const int PowerPillScore = 50;

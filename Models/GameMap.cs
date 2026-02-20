@@ -39,7 +39,7 @@ public class GameMap
     /// <summary>
     /// Verifica si una entidad puede moverse a través de una posición en una dirección dada.
     /// </summary>
-    public bool CanMoveThrough(double pixelX, double pixelY, int speed, MovementDirection dir)
+    public bool CanMoveThrough(double pixelX, double pixelY, double speed, MovementDirection dir)
     {
         var (dx, dy) = dir.ToVector();
         double nextX = pixelX + dx * speed;

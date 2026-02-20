@@ -138,6 +138,16 @@ public partial class PacmanGameViewModel : ViewModelBase
             }
         }
 
+        // Si el backend tiene significativamente más puntos que la vista, significa que el estado se reinició (vidas a 0 o nivel nuevo).
+        // Forzamos un redibujado de todos los elementos para que reaparezcan en pantalla.
+        var totalDots = _game.Dots;
+        var viewDotsCount = GameEntities.Count(e => e is DotViewModel || e is PowerPillViewModel);
+        if (totalDots.Count > viewDotsCount)
+        {
+            SyncViewModels();
+            return;
+        }
+
         // Eliminar puntos recolectados
         var currentDots = _game.Dots;
         for (int i = GameEntities.Count - 1; i >= 0; i--)

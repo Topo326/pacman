@@ -81,8 +81,8 @@ public class GameService : IGameService
         
         _ghosts.Add(new Ghost(13 * ts, 11 * ts, GhostType.Blinky, 0, true));
         _ghosts.Add(new Ghost(13 * ts, 14 * ts, GhostType.Pinky, 5));
-        _ghosts.Add(new Ghost(11 * ts, 14 * ts, GhostType.Inky, 10));
-        _ghosts.Add(new Ghost(15 * ts, 14 * ts, GhostType.Clyde, 15));
+        _ghosts.Add(new Ghost(11.5 * ts, 14 * ts, GhostType.Inky, 10));
+        _ghosts.Add(new Ghost(14.5 * ts, 14 * ts, GhostType.Clyde, 15));
     }
 
     private void InitializeDots()
@@ -118,6 +118,10 @@ public class GameService : IGameService
                 if (State.Lives > 0)
                 {
                     Player.Reset(13 * GameConstants.TileSize, 22 * GameConstants.TileSize);
+                    State.IsFrightenedMode = false;
+                    State.FrightenedTimeLeft = 0;
+                    State.IsScatterMode = false;
+                    State.ModeTimeLeft = GameConstants.ChaseDurationSeconds;
                     InitializeGhosts();
                 }
                 else
@@ -231,6 +235,10 @@ public class GameService : IGameService
             // Nivel completado
             InitializeDots();
             Player.Reset(13 * GameConstants.TileSize, 22 * GameConstants.TileSize);
+            State.IsFrightenedMode = false;
+            State.FrightenedTimeLeft = 0;
+            State.IsScatterMode = false;
+            State.ModeTimeLeft = GameConstants.ChaseDurationSeconds;
             InitializeGhosts();
         }
     }
