@@ -5,23 +5,70 @@
              x:DataType="vm:PacmanGameViewModel" 
              Focusable="True">
 
+    <UserControl.Styles>
+        <!-- Estilos para las paredes con efecto de neón azul -->
+        <Style Selector="Rectangle.Wall">
+            <Setter Property="Fill" Value="#2121DE"/>
+            <Setter Property="Stroke" Value="#4747FF"/>
+            <Setter Property="StrokeThickness" Value="1"/>
+            <Setter Property="RadiusX" Value="4"/>
+            <Setter Property="RadiusY" Value="4"/>
+        </Style>
+        
+        <!-- Estilo para los puntos normales -->
+        <Style Selector="Ellipse.Dot">
+            <Setter Property="Fill" Value="#FFB8AE"/>
+        </Style>
+
+        <!-- Estilo para las súper píldoras con animación de parpadeo -->
+        <Style Selector="Ellipse.PowerPill">
+            <Setter Property="Fill" Value="#FFB8AE"/>
+            <Style.Animations>
+                <Animation Duration="0:0:0.5" IterationCount="Infinite">
+                    <KeyFrame KeyTime="0:0:0">
+                        <Setter Property="Opacity" Value="1.0"/>
+                        <Setter Property="ScaleTransform.ScaleX" Value="1.0"/>
+                        <Setter Property="ScaleTransform.ScaleY" Value="1.0"/>
+                    </KeyFrame>
+                    <KeyFrame KeyTime="0:0:0.25">
+                        <Setter Property="Opacity" Value="0.4"/>
+                        <Setter Property="ScaleTransform.ScaleX" Value="1.2"/>
+                        <Setter Property="ScaleTransform.ScaleY" Value="1.2"/>
+                    </KeyFrame>
+                    <KeyFrame KeyTime="0:0:0.5">
+                        <Setter Property="Opacity" Value="1.0"/>
+                        <Setter Property="ScaleTransform.ScaleX" Value="1.0"/>
+                        <Setter Property="ScaleTransform.ScaleY" Value="1.0"/>
+                    </KeyFrame>
+                </Animation>
+            </Style.Animations>
+        </Style>
+
+        <!-- Texto de HUD -->
+        <Style Selector="TextBlock.HUD">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontFamily" Value="Courier New"/>
+        </Style>
+    </UserControl.Styles>
+
     <Grid RowDefinitions="Auto, *">
-        <Border Grid.Row="0" Background="Black" Padding="10">
-            <StackPanel Orientation="Horizontal" Spacing="40" HorizontalAlignment="Center">
-                <TextBlock Text="{Binding Score, StringFormat='SCORE: {0}'}" Foreground="White" FontSize="20" FontWeight="Bold"/>
-                <TextBlock Text="{Binding Lives, StringFormat='LIVES: {0}'}" Foreground="White" FontSize="20" FontWeight="Bold"/>
-            </StackPanel>
+        <Border Grid.Row="0" Background="Black" BorderBrush="#2121DE" BorderThickness="0,0,0,2" Padding="10">
+            <Grid ColumnDefinitions="*, *, *">
+                <TextBlock Grid.Column="0" Text="{Binding Score, StringFormat='SCORE: {0}'}" Classes="HUD" HorizontalAlignment="Left"/>
+                <TextBlock Grid.Column="1" Text="{Binding HighScore, StringFormat='HIGH SCORE: {0}'}" Classes="HUD" HorizontalAlignment="Center" Foreground="Yellow"/>
+                <TextBlock Grid.Column="2" Text="{Binding Lives, StringFormat='LIVES: {0}'}" Classes="HUD" HorizontalAlignment="Right"/>
+            </Grid>
         </Border>
 
         <Viewbox Grid.Row="1" Stretch="Uniform">
-            <Canvas Width="736" Height="813" Background="Black">
+            <Canvas Width="728" Height="780" Background="Black">
                 
-            
-                <ItemsControl ItemsSource="{Binding GameEntities}" Width="672" Height="744"
-                              Canvas.Left="{Binding MapOffsetX}" Canvas.Top="{Binding MapOffsetY}">
+                <ItemsControl ItemsSource="{Binding GameEntities}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <Canvas Width="672" Height="744" Background="Transparent"/>
+                            <Canvas Width="728" Height="780" Background="Transparent"/>
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                     
@@ -33,25 +80,42 @@
                     </ItemsControl.Styles>
                     
                     <ItemsControl.DataTemplates>
+                        <!-- Template para Puntos Normales -->
                         <DataTemplate DataType="{x:Type vm:DotViewModel}">
-                            <Ellipse Width="8" Height="8" Fill="#FFB8ae"/>
+                            <Ellipse Width="6" Height="6" Classes="Dot"/>
                         </DataTemplate>
                         
+                        <!-- Template para Súper Píldoras -->
+                        <DataTemplate DataType="{x:Type vm:PowerPillViewModel}">
+                            <Ellipse Width="16" Height="16" Classes="PowerPill">
+                                <Ellipse.RenderTransform>
+                                    <ScaleTransform CenterX="8" CenterY="8"/>
+                                </Ellipse.RenderTransform>
+                            </Ellipse>
+                        </DataTemplate>
+                        
+                        <!-- Template para Paredes -->
                         <DataTemplate DataType="{x:Type vm:WallViewModel}">
-                            <Rectangle Width="24" Height="24" Fill="Transparent"/>
+                            <Rectangle Width="26" Height="26" Classes="Wall"/>
                         </DataTemplate>
 
+                        <!-- Template para Pacman -->
                         <DataTemplate DataType="{x:Type vm:PlayerEntityViewModel}">
-                            <Image Width="72" Height="72" Source="{Binding Sprite}"/>
+                            <Image Width="26" Height="26" Source="{Binding Sprite}"/>
                         </DataTemplate>
 
+                        <!-- Template para Fantasmas -->
                         <DataTemplate DataType="{x:Type vm:GhostEntityViewModel}">
-                            <Image Width="24" Height="24" Source="{Binding Sprite}"/>
+                            <Image Width="26" Height="26" Source="{Binding Sprite}">
+                                <Image.Transitions>
+                                    <Transitions>
+                                        <DoubleTransition Property="Opacity" Duration="0:0:0.2"/>
+                                    </Transitions>
+                                </Image.Transitions>
+                            </Image>
                         </DataTemplate>
                     </ItemsControl.DataTemplates>
                 </ItemsControl>
-                
-                <Image Source="/Assets/map.jpg" Width="736" Height="813" Opacity="0.4" IsHitTestVisible="False"/>
             </Canvas>
         </Viewbox>
     </Grid>

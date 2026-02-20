@@ -2,10 +2,13 @@ using System;
 
 namespace PacmanGame.Models;
 
+/// <summary>
+/// Representa el mapa del juego y proporciona lógica para colisiones y navegación.
+/// </summary>
 public class GameMap
 {
     private readonly int[,] _grid;
-    public const int TileSize = 26;
+    public int TileSize => GameConstants.TileSize;
     
     public int Rows { get; }
     public int Cols { get; }
@@ -31,6 +34,11 @@ public class GameMap
 
     public bool IsGhostHouse(int row, int col) => this[row, col] == 2;
 
+    public bool IsPowerPill(int row, int col) => this[row, col] == 3;
+
+    /// <summary>
+    /// Verifica si una entidad puede moverse a través de una posición en una dirección dada.
+    /// </summary>
     public bool CanMoveThrough(double pixelX, double pixelY, int speed, MovementDirection dir)
     {
         var (dx, dy) = dir.ToVector();

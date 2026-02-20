@@ -2,13 +2,14 @@ using PacmanGame.Models;
 
 namespace PacmanGame.ViewModels;
 
-public class WallViewModel : EntityViewModel { } // Para paredes
-public class DotViewModel : EntityViewModel { }  // Para puntos
-public class PlayerEntityViewModel : EntityViewModel { } // Para Pac-Man
+public class WallViewModel : EntityViewModel { } 
+public class DotViewModel : EntityViewModel { }  
+public class PowerPillViewModel : EntityViewModel { }
+public class PlayerEntityViewModel : EntityViewModel { } 
 
 public class GhostEntityViewModel : EntityViewModel
 {
     public GhostType Type { get; set; }
-    public double ReleaseTime { get; set; } // Tiempo en segundos para liberar
-    public bool IsActive { get; set; } // Si ya fue liberado
+    public bool IsActive { get; set; } 
+    public bool IsFrightened { get; set; }
 }

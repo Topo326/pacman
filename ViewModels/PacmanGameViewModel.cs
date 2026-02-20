@@ -1,5 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using Avalonia.Input;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -8,6 +9,9 @@ using PacmanGame.Services;
 
 namespace PacmanGame.ViewModels;
 
+/// <summary>
+/// ViewModel para la pantalla de juego de Pacman.
+/// </summary>
 public partial class PacmanGameViewModel : ViewModelBase
 {
     private readonly MainWindowViewModel _mainViewModel;
@@ -15,8 +19,8 @@ public partial class PacmanGameViewModel : ViewModelBase
     private readonly DispatcherTimer _gameLoop;
 
     [ObservableProperty] private int _score;
+    [ObservableProperty] private int _highScore;
     [ObservableProperty] private int _lives = 3;
-    [ObservableProperty] private double _dotOffset = 8;
     [ObservableProperty] private double _mapOffsetX = 0;
     [ObservableProperty] private double _mapOffsetY = 0;
 
@@ -42,8 +46,8 @@ public partial class PacmanGameViewModel : ViewModelBase
     {
         GameEntities.Clear();
 
-        // Add Walls
-        int ts = GameMap.TileSize;
+        // Agregar Paredes
+        int ts = GameConstants.TileSize;
         for (int r = 0; r < _game.Map.Rows; r++)
         for (int c = 0; c < _game.Map.Cols; c++)
         {
@@ -53,10 +57,16 @@ public partial class PacmanGameViewModel : ViewModelBase
             }
         }
 
-        // Add Dots
+        // Agregar Puntos y Súper Píldoras
         foreach (var dot in _game.Dots)
-            GameEntities.Add(new DotViewModel { X = dot.x - 8 + DotOffset, Y = dot.y - 8 + DotOffset }); 
+        {
+            if (dot.isPower)
+                GameEntities.Add(new PowerPillViewModel { X = dot.x, Y = dot.y });
+            else
+                GameEntities.Add(new DotViewModel { X = dot.x, Y = dot.y });
+        }
 
+        // Agregar Fantasmas
         foreach (var ghost in _game.Ghosts)
         {
             var vm = new GhostEntityViewModel 
@@ -66,10 +76,11 @@ public partial class PacmanGameViewModel : ViewModelBase
                 Type = ghost.Type,
                 IsActive = ghost.IsActive
             };
-            vm.LoadSprite(GetGhostSprite(ghost.Type));
+            vm.LoadSprite(GetGhostSprite(ghost.Type, false));
             GameEntities.Add(vm);
         }
 
+        // Agregar Jugador
         var playerVm = new PlayerEntityViewModel { X = _game.Player.X, Y = _game.Player.Y };
         playerVm.LoadSprite("PacMan.gif");
         GameEntities.Add(playerVm);
@@ -99,9 +110,11 @@ public partial class PacmanGameViewModel : ViewModelBase
     private void UpdateView()
     {
         Score = _game.State.Score;
+        HighScore = _game.State.HighScore;
         Lives = _game.State.Lives;
 
         int ghostIndex = 0;
+        bool isFrightened = _game.State.IsFrightenedMode;
         
         foreach (var entity in GameEntities)
         {
@@ -117,37 +130,39 @@ public partial class PacmanGameViewModel : ViewModelBase
                     ghost.X = g.X;
                     ghost.Y = g.Y;
                     ghost.IsActive = g.IsActive;
+                    ghost.IsFrightened = isFrightened;
+                    ghost.LoadSprite(GetGhostSprite(g.Type, isFrightened));
                     break;
             }
         }
 
+        // Eliminar puntos recolectados
+        var currentDots = _game.Dots;
         for (int i = GameEntities.Count - 1; i >= 0; i--)
         {
-            if (GameEntities[i] is not DotViewModel dot) continue;
-            
-            bool exists = false;
-            foreach (var d in _game.Dots)
+            var entity = GameEntities[i];
+            if (entity is DotViewModel || entity is PowerPillViewModel)
             {
-                // Calculate expected visual position for this model dot
-                double expectedX = d.x - 8 + DotOffset;
-                double expectedY = d.y - 8 + DotOffset;
-                
-                if (Math.Abs(expectedX - dot.X) < 1 && Math.Abs(expectedY - dot.Y) < 1)
+                bool stillExists = currentDots.Any(d => Math.Abs(d.x - entity.X) < 1 && Math.Abs(d.y - entity.Y) < 1);
+                if (!stillExists)
                 {
-                    exists = true;
-                    break;
+                    GameEntities.RemoveAt(i);
                 }
             }
-            if (!exists) GameEntities.RemoveAt(i);
         }
     }
 
-    private static string GetGhostSprite(GhostType type) => type switch
+    private static string GetGhostSprite(GhostType type, bool isFrightened)
     {
-        GhostType.Blinky => "Blinky_Down.gif",
-        GhostType.Pinky => "Pinky_Down.gif",
-        GhostType.Inky => "Inky_Down.gif",
-        GhostType.Clyde => "Clyde_Down.gif",
-        _ => "Blinky_Down.gif"
-    };
+        if (isFrightened) return "Blue_Ghost.gif";
+        
+        return type switch
+        {
+            GhostType.Blinky => "Blinky_Down.gif",
+            GhostType.Pinky => "Pinky_Down.gif",
+            GhostType.Inky => "Inky_Down.gif",
+            GhostType.Clyde => "Clyde_Down.gif",
+            _ => "Blinky_Down.gif"
+        };
+    }
 }
