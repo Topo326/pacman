@@ -87,9 +87,9 @@
                         
                         <!-- Template para Súper Píldoras -->
                         <DataTemplate DataType="{x:Type vm:PowerPillViewModel}">
-                            <Ellipse Width="16" Height="16" Classes="PowerPill">
+                            <Ellipse Width="16" Height="16" Classes="PowerPill" RenderTransformOrigin="50%,50%">
                                 <Ellipse.RenderTransform>
-                                    <ScaleTransform CenterX="8" CenterY="8"/>
+                                    <ScaleTransform />
                                 </Ellipse.RenderTransform>
                             </Ellipse>
                         </DataTemplate>
