@@ -1,0 +1,55 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:PacmanGame.ViewModels"
+             x:Class="PacmanGame.Views.HighScoresView"
+             x:DataType="vm:HighScoresViewModel"
+             Background="Black">
+    
+    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="20">
+        <TextBlock Text="HIGH SCORES" 
+                   FontSize="48" 
+                   Foreground="Yellow" 
+                   FontWeight="Bold" 
+                   HorizontalAlignment="Center"
+                   Margin="0,0,0,20"/>
+        
+        <ItemsControl ItemsSource="{Binding TopScores}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}" 
+                               FontSize="24" 
+                               Foreground="White" 
+                               HorizontalAlignment="Center"
+                               Margin="0,5"/>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <TextBlock Text="NO SCORES YET" 
+                   FontSize="24" 
+                   Foreground="Gray" 
+                   HorizontalAlignment="Center"
+                   Margin="0,20"
+                   IsVisible="{Binding !TopScores.Count}"/>
+
+        <Button Content="BACK" 
+                Command="{Binding GoBackCommand}"
+                HorizontalAlignment="Center"
+                Margin="0,40,0,0"
+                Classes="MenuButton"/>
+    </StackPanel>
+
+    <UserControl.Styles>
+        <Style Selector="Button.MenuButton">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="10"/>
+        </Style>
+        <Style Selector="Button.MenuButton:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="Yellow"/>
+        </Style>
+    </UserControl.Styles>
+</UserControl>

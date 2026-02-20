@@ -22,5 +22,10 @@ public partial class MenuViewModel : ViewModelBase
     {
         System.Environment.Exit(0);
     }
-    
+
+    [RelayCommand]
+    public void ShowHighScores()
+    {
+        _mainViewModel.ShowHighScores();
+    }
 }

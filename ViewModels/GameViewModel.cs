@@ -16,7 +16,7 @@ public partial class GameViewModel : ViewModelBase
 {
     private readonly MainWindowViewModel _main;
     private readonly IGameService _game;
-    private readonly Timer _tick;
+    private readonly System.Timers.Timer _tick;
     private readonly ScoreBoard _scoreBoard = new();
     private Process? _audioProcess;
 
@@ -34,7 +34,7 @@ public partial class GameViewModel : ViewModelBase
     {
         _main = mainWindowViewModel;
         _game = new GameService();
-        _tick = new Timer(120);
+        _tick = new System.Timers.Timer(120);
         _tick.Elapsed += OnTick;
     }
 

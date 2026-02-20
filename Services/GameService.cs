@@ -38,6 +38,19 @@ public class GameService : IGameService
     {
         _soundService = new LinuxSoundService();
         _scoreBoard = new ScoreBoard();
+        State.OnModeChanged += HandleModeChanged;
+    }
+    
+    private void HandleModeChanged()
+    {
+        foreach (var ghost in _ghosts.Where(g => g.IsActive && !g.IsEaten))
+        {
+            var opposite = ghost.CurrentDirection.Opposite();
+            if (opposite != MovementDirection.None)
+            {
+                ghost.CurrentDirection = opposite;
+            }
+        }
     }
 
     public void Initialize()
@@ -96,6 +109,25 @@ public class GameService : IGameService
     {
         State.Update(0.016); // Aproximadamente 60 FPS
         
+        if (Player.IsDead)
+        {
+            State.DeathTimer -= 0.016;
+            if (State.DeathTimer <= 0)
+            {
+                State.LoseLife();
+                if (State.Lives > 0)
+                {
+                    Player.Reset(13 * GameConstants.TileSize, 22 * GameConstants.TileSize);
+                    InitializeGhosts();
+                }
+                else
+                {
+                    HandleGameOver();
+                }
+            }
+            return;
+        }
+        
         ActivateGhosts();
         Player.Update(Map);
         UpdateGhosts();
@@ -118,11 +150,11 @@ public class GameService : IGameService
         var blinky = _ghosts.FirstOrDefault(g => g.Type == GhostType.Blinky);
         foreach (var ghost in _ghosts.Where(g => g.IsActive))
         {
-            ghost.Update(Map, Player, blinky, State.IsFrightenedMode);
+            ghost.Update(Map, Player, blinky, State.IsFrightenedMode, State.IsScatterMode);
             
             // Comprobar colisión con el jugador
             double dist = Math.Sqrt(Math.Pow(ghost.CenterX - Player.CenterX, 2) + Math.Pow(ghost.CenterY - Player.CenterY, 2));
-            if (dist < 20)
+            if (dist < 20 && !Player.IsDead)
             {
                 if (State.IsFrightenedMode && !ghost.IsEaten)
                 {
@@ -150,14 +182,10 @@ public class GameService : IGameService
 
     private void HandleDeath()
     {
+        if (Player.IsDead) return;
         _soundService.PlayDeath();
-        State.LoseLife();
-        
-        if (State.Lives > 0)
-        {
-            Player.Reset(13 * GameConstants.TileSize, 22 * GameConstants.TileSize);
-            InitializeGhosts();
-        }
+        Player.IsDead = true;
+        State.DeathTimer = 1.6; // tiempo para animación de muerte
     }
 
     private void HandleGameOver()

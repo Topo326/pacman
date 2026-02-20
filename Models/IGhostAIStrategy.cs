@@ -7,7 +7,7 @@ namespace PacmanGame.Models;
 /// </summary>
 public interface IGhostAIStrategy
 {
-    (double x, double y) GetTarget(Ghost ghost, Player player, Ghost? blinky, GameMap map);
+    (double x, double y) GetTarget(Ghost ghost, Player player, Ghost? blinky, GameMap map, bool isScatterMode);
 }
 
 /// <summary>
@@ -15,8 +15,11 @@ public interface IGhostAIStrategy
 /// </summary>
 public class BlinkyChaseStrategy : IGhostAIStrategy
 {
-    public (double x, double y) GetTarget(Ghost ghost, Player player, Ghost? blinky, GameMap map) 
-        => (player.CenterX, player.CenterY);
+    public (double x, double y) GetTarget(Ghost ghost, Player player, Ghost? blinky, GameMap map, bool isScatterMode) 
+    {
+        if (isScatterMode) return (map.PixelWidth, -GameConstants.TileSize); // Top Right
+        return (player.CenterX, player.CenterY);
+    }
 }
 
 /// <summary>
@@ -24,8 +27,10 @@ public class BlinkyChaseStrategy : IGhostAIStrategy
 /// </summary>
 public class PinkyChaseStrategy : IGhostAIStrategy
 {
-    public (double x, double y) GetTarget(Ghost ghost, Player player, Ghost? blinky, GameMap map)
+    public (double x, double y) GetTarget(Ghost ghost, Player player, Ghost? blinky, GameMap map, bool isScatterMode)
     {
+        if (isScatterMode) return (-GameConstants.TileSize, -GameConstants.TileSize); // Top Left
+        
         int offset = GameConstants.TileSize * 4;
         var (dx, dy) = player.CurrentDirection.ToVector();
         return (player.CenterX + dx * offset, player.CenterY + dy * offset);
@@ -37,8 +42,9 @@ public class PinkyChaseStrategy : IGhostAIStrategy
 /// </summary>
 public class InkyChaseStrategy : IGhostAIStrategy
 {
-    public (double x, double y) GetTarget(Ghost ghost, Player player, Ghost? blinky, GameMap map)
+    public (double x, double y) GetTarget(Ghost ghost, Player player, Ghost? blinky, GameMap map, bool isScatterMode)
     {
+        if (isScatterMode) return (map.PixelWidth, map.PixelHeight + GameConstants.TileSize); // Bottom Right
         if (blinky == null) return (player.CenterX, player.CenterY);
         
         int offset = GameConstants.TileSize * 2;
@@ -58,8 +64,10 @@ public class InkyChaseStrategy : IGhostAIStrategy
 /// </summary>
 public class ClydeChaseStrategy : IGhostAIStrategy
 {
-    public (double x, double y) GetTarget(Ghost ghost, Player player, Ghost? blinky, GameMap map)
+    public (double x, double y) GetTarget(Ghost ghost, Player player, Ghost? blinky, GameMap map, bool isScatterMode)
     {
+        if (isScatterMode) return (-GameConstants.TileSize, map.PixelHeight + GameConstants.TileSize); // Bottom Left
+        
         double dx = player.CenterX - ghost.CenterX;
         double dy = player.CenterY - ghost.CenterY;
         double distSq = dx * dx + dy * dy;
@@ -68,7 +76,7 @@ public class ClydeChaseStrategy : IGhostAIStrategy
         if (distSq > eightTilesSq)
             return (player.CenterX, player.CenterY);
         
-        return (0, map.PixelHeight); // Esquina inferior izquierda
+        return (-GameConstants.TileSize, map.PixelHeight + GameConstants.TileSize); // Flee to scatter corner
     }
 }
 
@@ -77,7 +85,7 @@ public class ClydeChaseStrategy : IGhostAIStrategy
 /// </summary>
 public class FrightenedStrategy : IGhostAIStrategy
 {
-    public (double x, double y) GetTarget(Ghost ghost, Player player, Ghost? blinky, GameMap map)
+    public (double x, double y) GetTarget(Ghost ghost, Player player, Ghost? blinky, GameMap map, bool isScatterMode)
     {
         return ghost.Type switch
         {

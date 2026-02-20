@@ -1,3 +1,5 @@
+using System;
+
 namespace PacmanGame.Models;
 
 /// <summary>
@@ -14,6 +16,16 @@ public class GameState
     // Estado de los fantasmas
     public bool IsFrightenedMode { get; set; }
     public double FrightenedTimeLeft { get; set; }
+    
+    // Modos cíclicos
+    public bool IsScatterMode { get; set; } = true;
+    public double ModeTimeLeft { get; set; } = GameConstants.ScatterDurationSeconds;
+    
+    // Timer para animación de muerte
+    public double DeathTimer { get; set; }
+    
+    // Evento para notificar inversión de dirección
+    public event Action? OnModeChanged;
 
     /// <summary>
     /// Incrementa la puntuación y actualiza el récord si es necesario.
@@ -39,6 +51,8 @@ public class GameState
         ElapsedSeconds = 0;
         IsFrightenedMode = false;
         FrightenedTimeLeft = 0;
+        IsScatterMode = true;
+        ModeTimeLeft = GameConstants.ScatterDurationSeconds;
     }
 
     /// <summary>
@@ -48,6 +62,7 @@ public class GameState
     {
         IsFrightenedMode = true;
         FrightenedTimeLeft = GameConstants.PowerPillDurationSeconds;
+        OnModeChanged?.Invoke();
     }
 
     /// <summary>
@@ -63,6 +78,18 @@ public class GameState
             {
                 IsFrightenedMode = false;
                 FrightenedTimeLeft = 0;
+                // No invertimos al final del modo asustado
+            }
+        }
+        else
+        {
+            // Solo avanza el timer cíclico si NO estamos asustados
+            ModeTimeLeft -= deltaTime;
+            if (ModeTimeLeft <= 0)
+            {
+                IsScatterMode = !IsScatterMode;
+                ModeTimeLeft = IsScatterMode ? GameConstants.ScatterDurationSeconds : GameConstants.ChaseDurationSeconds;
+                OnModeChanged?.Invoke();
             }
         }
     }

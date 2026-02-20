@@ -5,7 +5,11 @@ namespace PacmanGame.ViewModels;
 public class WallViewModel : EntityViewModel { } 
 public class DotViewModel : EntityViewModel { }  
 public class PowerPillViewModel : EntityViewModel { }
-public class PlayerEntityViewModel : EntityViewModel { } 
+public partial class PlayerEntityViewModel : EntityViewModel 
+{ 
+    [CommunityToolkit.Mvvm.ComponentModel.ObservableProperty]
+    private bool _isDead;
+} 
 
 public class GhostEntityViewModel : EntityViewModel
 {

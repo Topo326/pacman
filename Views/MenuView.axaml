@@ -2,7 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:PacmanGame.ViewModels"
              x:DataType="vm:MenuViewModel"
-             x:Class="PacmanGame.Views.MainView">
+             x:Class="PacmanGame.Views.MenuView">
     
     <StackPanel Spacing="20" HorizontalAlignment="Center" VerticalAlignment="Center">
         <TextBlock Text="PAC-MAN" 
@@ -13,6 +13,11 @@
         
         <Button Content="START GAME" 
                 Command="{Binding StartGameCommand}" 
+                HorizontalAlignment="Stretch" 
+                HorizontalContentAlignment="Center"/>
+                
+        <Button Content="HIGH SCORES" 
+                Command="{Binding ShowHighScoresCommand}" 
                 HorizontalAlignment="Stretch" 
                 HorizontalContentAlignment="Center"/>
                 

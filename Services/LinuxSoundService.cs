@@ -36,10 +36,6 @@ public class LinuxSoundService : ISoundService
                     CreateNoWindow = true
                 });
             }
-            else
-            {
-                Console.WriteLine($"Sound file not found: {path}");
-            }
         }
         catch (Exception ex)
         {

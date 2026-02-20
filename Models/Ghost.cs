@@ -51,7 +51,7 @@ public class Ghost
     /// <summary>
     /// Actualiza la posición y el comportamiento del fantasma.
     /// </summary>
-    public void Update(GameMap map, Player player, Ghost? blinky, bool isFrightened)
+    public void Update(GameMap map, Player player, Ghost? blinky, bool isFrightened, bool isScatterMode)
     {
         if (!IsActive || IsEaten) return;
 
@@ -66,17 +66,16 @@ public class Ghost
             return;
         }
 
-        // Movimiento normal
         if (!TryMove(CurrentDirection, map))
         {
-            CurrentDirection = GetBestDirection(map, player, blinky, isFrightened);
+            CurrentDirection = GetBestDirection(map, player, blinky, isFrightened, isScatterMode);
         }
         else if (IsCenteredOnTile())
         {
             var validDirections = GetValidDirections(map);
             if (validDirections.Count > 2 || (validDirections.Count == 2 && !validDirections.Contains(CurrentDirection)))
             {
-                CurrentDirection = GetBestDirection(map, player, blinky, isFrightened);
+                CurrentDirection = GetBestDirection(map, player, blinky, isFrightened, isScatterMode);
             }
         }
     }
@@ -84,7 +83,7 @@ public class Ghost
     private void ExitGhostHouse()
     {
         var targetX = 13.5 * GameConstants.TileSize;
-        var targetY = 11 * GameConstants.TileSize;
+        var targetY = 10 * GameConstants.TileSize;
         
         double dx = targetX - CenterX;
         double dy = targetY - CenterY;
@@ -99,7 +98,7 @@ public class Ghost
         else CurrentDirection = dx > 0 ? MovementDirection.Right : MovementDirection.Left;
     }
 
-    private MovementDirection GetBestDirection(GameMap map, Player player, Ghost? blinky, bool isFrightened)
+    private MovementDirection GetBestDirection(GameMap map, Player player, Ghost? blinky, bool isFrightened, bool isScatterMode)
     {
         var valid = GetValidDirections(map);
         var opposite = CurrentDirection.Opposite();
@@ -109,7 +108,7 @@ public class Ghost
 
         // Usar la estrategia correspondiente
         var strategy = isFrightened ? _frightenedStrategy : _chaseStrategy;
-        var target = strategy.GetTarget(this, player, blinky, map);
+        var target = strategy.GetTarget(this, player, blinky, map, isScatterMode);
         
         MovementDirection bestDir = MovementDirection.None;
         double minDistance = double.MaxValue;
@@ -142,9 +141,23 @@ public class Ghost
         {
             X = nextX;
             Y = nextY;
+            HandleTunnels(map);
             return true;
         }
         return false;
+    }
+    
+    private void HandleTunnels(GameMap map)
+    {
+        double rightEdge = map.PixelWidth;
+        if (X < -GameConstants.TileSize / 2.0)
+        {
+            X = rightEdge + GameConstants.TileSize / 2.0;
+        }
+        else if (X > rightEdge + GameConstants.TileSize / 2.0)
+        {
+            X = -GameConstants.TileSize / 2.0;
+        }
     }
 
     private bool CanMoveTo(double x, double y, GameMap map)
@@ -181,10 +194,15 @@ public class Ghost
 
     private bool IsCenteredOnTile()
     {
-        double tolerance = Speed;
+        double epsilon = 0.5;
         double modX = X % GameConstants.TileSize;
         double modY = Y % GameConstants.TileSize;
-        return (modX < tolerance) && (modY < tolerance);
+        
+        // Check if we are close enough to 0 or close enough to TileSize
+        bool centeredX = (modX < epsilon) || (modX > GameConstants.TileSize - epsilon);
+        bool centeredY = (modY < epsilon) || (modY > GameConstants.TileSize - epsilon);
+        
+        return centeredX && centeredY;
     }
 
     public void Reset(double x, double y)

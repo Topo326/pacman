@@ -23,4 +23,9 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         CurrentView = new MenuViewModel(this);
     }
+
+    public void ShowHighScores()
+    {
+        CurrentView = new HighScoresViewModel(this);
+    }
 }

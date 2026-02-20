@@ -82,7 +82,7 @@ public partial class PacmanGameViewModel : ViewModelBase
 
         // Agregar Jugador
         var playerVm = new PlayerEntityViewModel { X = _game.Player.X, Y = _game.Player.Y };
-        playerVm.LoadSprite("PacMan.gif");
+        playerVm.LoadSprite(GetPlayerSprite(_game.Player.CurrentDirection));
         GameEntities.Add(playerVm);
     }
 
@@ -123,6 +123,8 @@ public partial class PacmanGameViewModel : ViewModelBase
                 case PlayerEntityViewModel player:
                     player.X = _game.Player.X;
                     player.Y = _game.Player.Y;
+                    player.IsDead = _game.Player.IsDead;
+                    if (!player.IsDead) player.LoadSprite(GetPlayerSprite(_game.Player.CurrentDirection));
                     break;
                     
                 case GhostEntityViewModel ghost when ghostIndex < _game.Ghosts.Count:
@@ -165,4 +167,6 @@ public partial class PacmanGameViewModel : ViewModelBase
             _ => "Blinky_Down.gif"
         };
     }
+
+    private static string GetPlayerSprite(MovementDirection dir) => "PacMan.gif";
 }
