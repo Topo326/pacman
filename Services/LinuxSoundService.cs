@@ -11,6 +11,7 @@ public class LinuxSoundService : ISoundService
     public void PlayBeginning() => PlaySound("pacman_beginning.wav");
     public void PlayChomp() => PlaySound("pacman_chomp.wav");
     public void PlayDeath() => PlaySound("pacman_death.wav");
+    public void PlayEatGhost() => PlaySound("pacman-eatghost.wav");
 
     private void PlaySound(string fileName)
     {

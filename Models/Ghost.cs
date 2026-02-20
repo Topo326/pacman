@@ -15,7 +15,7 @@ public class Ghost
     public double X { get; set; }
     public double Y { get; set; }
     public GhostType Type { get; }
-    public double ReleaseTime { get; }
+    public double ReleaseTime { get; set; }
     public bool IsActive { get; set; }
     public double Speed { get; set; } = GameConstants.GhostSpeed;
     public MovementDirection CurrentDirection { get; set; } = MovementDirection.Left;
