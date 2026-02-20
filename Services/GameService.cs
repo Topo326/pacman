@@ -32,9 +32,6 @@ public class GameService : IGameService
 
     public GameService()
     {
-        // In a real DI container we would inject this. For now, we instantiate directly.
-        // We could also pass it in constructor if ViewModel creates it.
-        // Let's assume Linux for now as requested.
         _soundService = new LinuxSoundService();
     }
 
@@ -129,14 +126,12 @@ public class GameService : IGameService
         }
         else
         {
-            // Game Over
+    
             SaveHighScore();
             InitializePlayer();
             InitializeGhosts();
-            // Optionally reset score here or wait for user restart
-            // For now, let's reset state completely after a delay or just reset score
             State.Reset();
-            LoadHighScore(); // Reload high score to ensure it's set
+            LoadHighScore();
         }
     }
 
@@ -174,7 +169,7 @@ public class GameService : IGameService
                 }
             }
         }
-        catch { /* Ignore errors */ }
+        catch { }
     }
 
     private void SaveHighScore()
@@ -190,7 +185,7 @@ public class GameService : IGameService
             string json = System.Text.Json.JsonSerializer.Serialize(data);
             System.IO.File.WriteAllText("highscore.json", json);
         }
-        catch { /* Ignore errors */ }
+        catch { }
     }
 
     private class HighScoreData

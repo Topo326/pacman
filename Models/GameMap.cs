@@ -5,7 +5,7 @@ namespace PacmanGame.Models;
 public class GameMap
 {
     private readonly int[,] _grid;
-    public const int TileSize = 24;
+    public const int TileSize = 26;
     
     public int Rows { get; }
     public int Cols { get; }
