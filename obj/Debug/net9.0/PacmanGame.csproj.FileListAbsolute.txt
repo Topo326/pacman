@@ -246,3 +246,35 @@
 /home/topo/Desktop/cshar/Uni/capstone/pacman/obj/Debug/net9.0/PacmanGame.csproj.Up2Date
 /home/topo/Desktop/cshar/Uni/capstone/pacman/obj/Debug/net9.0/PacmanGame.genruntimeconfig.cache
 /home/topo/Desktop/cshar/Uni/capstone/pacman/obj/Debug/net9.0/ref/PacmanGame.dll
+/home/topo/Desktop/cshar/Uni/capstone/capstone_leonardo/PacmanGame/bin/Debug/net9.0/Assets/All_Assets_Palettes.png
+/home/topo/Desktop/cshar/Uni/capstone/capstone_leonardo/PacmanGame/bin/Debug/net9.0/Assets/Arcade - Pac-Man - General Sprites - Blinky (Down).gif
+/home/topo/Desktop/cshar/Uni/capstone/capstone_leonardo/PacmanGame/bin/Debug/net9.0/Assets/Arcade - Pac-Man - General Sprites - Blinky (Left).gif
+/home/topo/Desktop/cshar/Uni/capstone/capstone_leonardo/PacmanGame/bin/Debug/net9.0/Assets/Arcade - Pac-Man - General Sprites - Blinky (RIght).gif
+/home/topo/Desktop/cshar/Uni/capstone/capstone_leonardo/PacmanGame/bin/Debug/net9.0/Assets/Arcade - Pac-Man - General Sprites - Blinky (Up).gif
+/home/topo/Desktop/cshar/Uni/capstone/capstone_leonardo/PacmanGame/bin/Debug/net9.0/Assets/Arcade - Pac-Man - General Sprites - Blue Ghost.gif
+/home/topo/Desktop/cshar/Uni/capstone/capstone_leonardo/PacmanGame/bin/Debug/net9.0/Assets/Arcade - Pac-Man - General Sprites - Clyde (Down).gif
+/home/topo/Desktop/cshar/Uni/capstone/capstone_leonardo/PacmanGame/bin/Debug/net9.0/Assets/Arcade - Pac-Man - General Sprites - Clyde (Left).gif
+/home/topo/Desktop/cshar/Uni/capstone/capstone_leonardo/PacmanGame/bin/Debug/net9.0/Assets/Arcade - Pac-Man - General Sprites - Clyde (Right).gif
+/home/topo/Desktop/cshar/Uni/capstone/capstone_leonardo/PacmanGame/bin/Debug/net9.0/Assets/Arcade - Pac-Man - General Sprites - Clyde (Up).gif
+/home/topo/Desktop/cshar/Uni/capstone/capstone_leonardo/PacmanGame/bin/Debug/net9.0/Assets/Arcade - Pac-Man - General Sprites - Inky (Down).gif
+/home/topo/Desktop/cshar/Uni/capstone/capstone_leonardo/PacmanGame/bin/Debug/net9.0/Assets/Arcade - Pac-Man - General Sprites - Inky (Left).gif
+/home/topo/Desktop/cshar/Uni/capstone/capstone_leonardo/PacmanGame/bin/Debug/net9.0/Assets/Arcade - Pac-Man - General Sprites - Inky (RIght).gif
+/home/topo/Desktop/cshar/Uni/capstone/capstone_leonardo/PacmanGame/bin/Debug/net9.0/Assets/Arcade - Pac-Man - General Sprites - Inky (Up).gif
+/home/topo/Desktop/cshar/Uni/capstone/capstone_leonardo/PacmanGame/bin/Debug/net9.0/Assets/Arcade - Pac-Man - General Sprites - Pinky (Down).gif
+/home/topo/Desktop/cshar/Uni/capstone/capstone_leonardo/PacmanGame/bin/Debug/net9.0/Assets/Arcade - Pac-Man - General Sprites - Pinky (Left).gif
+/home/topo/Desktop/cshar/Uni/capstone/capstone_leonardo/PacmanGame/bin/Debug/net9.0/Assets/Arcade - Pac-Man - General Sprites - Pinky (Right).gif
+/home/topo/Desktop/cshar/Uni/capstone/capstone_leonardo/PacmanGame/bin/Debug/net9.0/Assets/Arcade - Pac-Man - General Sprites - Pinky (Up).gif
+/home/topo/Desktop/cshar/Uni/capstone/capstone_leonardo/PacmanGame/bin/Debug/net9.0/Assets/Arcade - Pac-Man - General Sprites - White Ghost.gif
+/home/topo/Desktop/cshar/Uni/capstone/capstone_leonardo/PacmanGame/bin/Debug/net9.0/Assets/Arcade - Pac-Man - Miscellaneous - All Assets_Palettes.png
+/home/topo/Desktop/cshar/Uni/capstone/capstone_leonardo/PacmanGame/bin/Debug/net9.0/Assets/Arcade - Pac-Man - Miscellaneous - Attract Mode & HUD Assets.png
+/home/topo/Desktop/cshar/Uni/capstone/capstone_leonardo/PacmanGame/bin/Debug/net9.0/Assets/Arcade - Pac-Man - Miscellaneous - General Sprites.png
+/home/topo/Desktop/cshar/Uni/capstone/capstone_leonardo/PacmanGame/bin/Debug/net9.0/Assets/Arcade - Pac-Man - Miscellaneous - Text.png
+/home/topo/Desktop/cshar/Uni/capstone/capstone_leonardo/PacmanGame/bin/Debug/net9.0/Assets/Attract_Mode_HUD_Assets.png
+/home/topo/Desktop/cshar/Uni/capstone/capstone_leonardo/PacmanGame/bin/Debug/net9.0/Assets/General_Sprites.png
+/home/topo/Desktop/cshar/Uni/capstone/capstone_leonardo/PacmanGame/bin/Debug/net9.0/Assets/Miscellaneous_Text.png
+/home/topo/Desktop/cshar/Uni/capstone/capstone_leonardo/PacmanGame/bin/Debug/net9.0/Assets/pacman-beginning./pacman_beginning.wav
+/home/topo/Desktop/cshar/Uni/capstone/capstone_leonardo/PacmanGame/bin/Debug/net9.0/Assets/pacman-chomp./pacman_chomp.wav
+/home/topo/Desktop/cshar/Uni/capstone/capstone_leonardo/PacmanGame/bin/Debug/net9.0/Assets/pacman-death./pacman_death.wav
+/home/topo/Desktop/cshar/Uni/capstone/capstone_leonardo/PacmanGame/bin/Debug/net9.0/Assets/Pacman_animate.gif
+/home/topo/Desktop/cshar/Uni/capstone/capstone_leonardo/PacmanGame/bin/Debug/net9.0/Assets/Cereza.jpg
+/home/topo/Desktop/cshar/Uni/capstone/capstone_leonardo/PacmanGame/bin/Debug/net9.0/Assets/FreasaDeVida.jpg

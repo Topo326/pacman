@@ -6,6 +6,18 @@
              Focusable="True">
 
     <UserControl.Styles>
+        <Style Selector="Button.HudBtn">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="White"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Focusable" Value="False"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="10,0,0,0"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
+
         <!-- Estilos para las paredes con efecto de neón azul -->
         <Style Selector="Rectangle.Wall">
             <Setter Property="Fill" Value="#2121DE"/>
@@ -79,11 +91,14 @@
 
     <Grid RowDefinitions="Auto, *">
         <Border Grid.Row="0" Background="Black" BorderBrush="#2121DE" BorderThickness="0,0,0,2" Padding="10">
-            <Grid ColumnDefinitions="*, *, *">
-                <TextBlock Grid.Column="0" Text="{Binding Score, StringFormat='SCORE: {0}'}" Classes="HUD" HorizontalAlignment="Left"/>
-                <TextBlock Grid.Column="1" Text="{Binding HighScore, StringFormat='HIGH SCORE: {0}'}" Classes="HUD" HorizontalAlignment="Center" Foreground="Yellow"/>
-                <TextBlock Grid.Column="2" Text="{Binding Lives, StringFormat='LIVES: {0}'}" Classes="HUD" HorizontalAlignment="Right"/>
-            </Grid>
+            <DockPanel LastChildFill="False">
+                <TextBlock Text="{Binding Score, StringFormat='SCORE: {0}'}" Classes="HUD" VerticalAlignment="Center" DockPanel.Dock="Left"/>
+                <TextBlock Text="{Binding HighScore, StringFormat='HIGH SCORE: {0}'}" Classes="HUD" VerticalAlignment="Center" Foreground="Yellow" DockPanel.Dock="Left" Margin="40,0,0,0"/>
+                
+                <Button Content="MUTE" Command="{Binding ToggleMuteCommand}" Classes="HudBtn" DockPanel.Dock="Right"/>
+                <Button Content="PAUSE" Command="{Binding TogglePauseCommand}" Classes="HudBtn" DockPanel.Dock="Right"/>
+                <TextBlock Text="{Binding Lives, StringFormat='LIVES: {0}'}" Classes="HUD" VerticalAlignment="Center" DockPanel.Dock="Right" Margin="0,0,20,0"/>
+            </DockPanel>
         </Border>
 
         <Viewbox Grid.Row="1" Stretch="Uniform">
@@ -146,9 +161,67 @@
                                 </Image.Transitions>
                             </Image>
                         </DataTemplate>
+
+                        <!-- Template para Frutas Especiales / Pickups -->
+                        <DataTemplate DataType="{x:Type vm:PickupEntityViewModel}">
+                            <Image Width="26" Height="26" Source="{Binding Sprite}" Stretch="Fill" />
+                        </DataTemplate>
                     </ItemsControl.DataTemplates>
                 </ItemsControl>
             </Canvas>
         </Viewbox>
+
+        <!-- Overlay de Pausa -->
+        <Grid Grid.Row="1" Background="#B3000000" IsVisible="{Binding IsPaused}">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="20">
+                <TextBlock Text="JUEGO PAUSADO" 
+                           Foreground="Yellow" 
+                           FontSize="48" 
+                           FontWeight="Bold" 
+                           HorizontalAlignment="Center"/>
+                
+                <Button Content="REANUDAR" 
+                        Command="{Binding TogglePauseCommand}" 
+                        HorizontalAlignment="Stretch" 
+                        HorizontalContentAlignment="Center"
+                        FontSize="24"/>
+                        
+                <Button Content="SALIR DE LA PARTIDA" 
+                        Command="{Binding ExitGameCommand}" 
+                        HorizontalAlignment="Stretch" 
+                        HorizontalContentAlignment="Center"
+                        FontSize="24"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Overlay de Game Over -->
+        <Grid Grid.Row="1" Background="#E6000000" IsVisible="{Binding IsGameOver}">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="30">
+                <TextBlock Text="GAME OVER" 
+                           Foreground="Red" 
+                           FontSize="64" 
+                           FontWeight="Black" 
+                           HorizontalAlignment="Center"/>
+                
+                <TextBlock Text="{Binding Score, StringFormat='FINAL SCORE: {0}'}" 
+                           Foreground="Yellow" 
+                           FontSize="32" 
+                           FontWeight="Bold" 
+                           HorizontalAlignment="Center"/>
+                
+                <Button Content="VOLVER A JUGAR" 
+                        Command="{Binding RestartGameCommand}" 
+                        HorizontalAlignment="Stretch" 
+                        HorizontalContentAlignment="Center"
+                        FontSize="24"
+                        Margin="0,20,0,0"/>
+                        
+                <Button Content="SALIR AL MENÚ" 
+                        Command="{Binding ExitGameCommand}" 
+                        HorizontalAlignment="Stretch" 
+                        HorizontalContentAlignment="Center"
+                        FontSize="24"/>
+            </StackPanel>
+        </Grid>
     </Grid>
 </UserControl>

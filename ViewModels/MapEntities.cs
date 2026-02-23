@@ -17,3 +17,8 @@ public class GhostEntityViewModel : EntityViewModel
     public bool IsActive { get; set; } 
     public bool IsFrightened { get; set; }
 }
+
+public class PickupEntityViewModel : EntityViewModel
+{
+    public PickupType Type { get; set; }
+}

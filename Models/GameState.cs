@@ -24,6 +24,10 @@ public class GameState
     // Timer para animación de muerte
     public double DeathTimer { get; set; }
     
+    // Pickups Timers
+    public double CherrySpawnTimer { get; set; } = 15.0;     // 15 segundos para re-aparecer
+    public double StrawberrySpawnTimer { get; set; } = 30.0; // 30 segundos para re-aparecer
+    
     // Evento para notificar inversión de dirección
     public event Action? OnModeChanged;
 
@@ -53,6 +57,8 @@ public class GameState
         FrightenedTimeLeft = 0;
         IsScatterMode = false;
         ModeTimeLeft = GameConstants.ChaseDurationSeconds;
+        CherrySpawnTimer = 15.0;
+        StrawberrySpawnTimer = 30.0;
     }
 
     /// <summary>
@@ -71,6 +77,11 @@ public class GameState
     public void Update(double deltaTime)
     {
         ElapsedSeconds += deltaTime;
+        
+        // Descuenta el tiempo hasta spawnear los pickups
+        if (CherrySpawnTimer > 0) CherrySpawnTimer -= deltaTime;
+        if (StrawberrySpawnTimer > 0) StrawberrySpawnTimer -= deltaTime;
+        
         if (IsFrightenedMode)
         {
             FrightenedTimeLeft -= deltaTime;

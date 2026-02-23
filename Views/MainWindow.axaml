@@ -4,7 +4,7 @@
         x:Class="PacmanGame.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel" 
         Title="Pacman Capstone Project"
-        Width="500" Height="600"
+        Width="1050" Height="950"
         WindowStartupLocation="CenterScreen">
 
     <TransitioningContentControl Content="{Binding CurrentView}" />

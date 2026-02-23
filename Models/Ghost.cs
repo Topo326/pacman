@@ -6,7 +6,8 @@ namespace PacmanGame.Models;
 public enum GhostType { Blinky, Pinky, Inky, Clyde }
 
 /// <summary>
-/// Representa un fantasma en el juego con su propia IA y estados.
+/// Representa un fantasma en el juego con su propia IA, temporizadores y estados.
+/// Cada fantasma utiliza distintas estrategias euclidianas para cazar a Pac-Man basándose en su enum GhostType.
 /// </summary>
 public class Ghost
 {
@@ -21,12 +22,19 @@ public class Ghost
     public MovementDirection CurrentDirection { get; set; } = MovementDirection.Left;
     public bool IsEaten { get; set; }
 
+    private int _lastProcessedRow = -1;
+    private int _lastProcessedCol = -1;
+
     public double CenterX => X + GameConstants.TileSize / 2.0;
     public double CenterY => Y + GameConstants.TileSize / 2.0;
 
     private readonly IGhostAIStrategy _chaseStrategy;
     private readonly IGhostAIStrategy _frightenedStrategy;
 
+    /// <summary>
+    /// Constructor principal del fantasma.
+    /// Define la posición inicial, su identidad, su tiempo cautivo y las estrategias de persecución asignadas.
+    /// </summary>
     public Ghost(double x, double y, GhostType type, double releaseTime, bool startActive = false)
     {
         X = x;
@@ -36,7 +44,7 @@ public class Ghost
         IsActive = startActive;
         CurrentDirection = MovementDirection.Left;
         
-        // Asignar estrategias según el tipo
+        // Asignar estrategias específicas y únicas según el tipo (personalidad del fantasma)
         _chaseStrategy = type switch
         {
             GhostType.Blinky => new BlinkyChaseStrategy(),
@@ -49,16 +57,22 @@ public class Ghost
     }
 
     /// <summary>
-    /// Actualiza la posición y el comportamiento del fantasma.
+    /// Actualiza la posición y el comportamiento interno del fantasma en cada frame. 
+    /// Decide su dirección tomando en cuenta paredes y calculando la menor distancia hacia la meta.
     /// </summary>
+    /// <param name="map">Mapa del nivel.</param>
+    /// <param name="player">Instancia de Pac-Man para usar sus coordenadas.</param>
+    /// <param name="blinky">Referencia de Blinky (usado por Inky para trazar su vector).</param>
+    /// <param name="isFrightened">Verdadero si Pac-Man ha comido una Píldora de Poder.</param>
+    /// <param name="isScatterMode">Verdadero si los fantasmas están en su rutina global de Dispersión.</param>
     public void Update(GameMap map, Player player, Ghost? blinky, bool isFrightened, bool isScatterMode)
     {
         if (!IsActive || IsEaten) return;
 
-        // Ajustar velocidad si está asustado
+        // Ajustar velocidad disminuyéndola intencionalmente si está asustado (Frightened Mode)
         Speed = isFrightened ? GameConstants.GhostFrightenedSpeed : GameConstants.GhostSpeed;
 
-        // Lógica para salir de la casa de los fantasmas
+        // Lógica programada para guiar automáticamente al fantasma a la puerta y salir de la "Casa de los Fantasmas"
         var (row, col) = map.PixelToTile(CenterX, CenterY);
         if (map.IsGhostHouse(row, col))
         {
@@ -66,20 +80,35 @@ public class Ghost
             return;
         }
 
-        if (!TryMove(CurrentDirection, map))
-        {
-            CurrentDirection = GetBestDirection(map, player, blinky, isFrightened, isScatterMode);
-        }
-        else if (IsCenteredOnTile())
+        double tileX = col * GameConstants.TileSize;
+        double tileY = row * GameConstants.TileSize;
+        double dist = Math.Abs(X - tileX) + Math.Abs(Y - tileY);
+
+        // Cuando la distancia actual al centro ideal de la cuadrícula es mínima, permite recalcular la dirección
+        if (dist <= Speed && (_lastProcessedRow != row || _lastProcessedCol != col))
         {
             var validDirections = GetValidDirections(map);
-            if (validDirections.Count > 2 || (validDirections.Count == 2 && !validDirections.Contains(CurrentDirection)))
+            if (validDirections.Count != 2 || !validDirections.Contains(CurrentDirection))
             {
+                _lastProcessedRow = row;
+                _lastProcessedCol = col;
+                X = tileX;
+                Y = tileY;
                 CurrentDirection = GetBestDirection(map, player, blinky, isFrightened, isScatterMode);
             }
         }
+
+        // Si topa repentinamente o la meta dicta girar, trata de anclarse para dar una vuelta limpia de 90°
+        if (!TryMove(CurrentDirection, map))
+        {
+            SnapToGrid();
+            CurrentDirection = GetBestDirection(map, player, blinky, isFrightened, isScatterMode);
+        }
     }
 
+    /// <summary>
+    /// Guía al fantasma a través de una ruta forzada en el eje Y hacia la puerta exterior de la casa central.
+    /// </summary>
     private void ExitGhostHouse()
     {
         var targetX = 13.5 * GameConstants.TileSize;
@@ -98,15 +127,20 @@ public class Ghost
         else CurrentDirection = dx > 0 ? MovementDirection.Right : MovementDirection.Left;
     }
 
+    /// <summary>
+    /// Analiza las intersecciones posibles y selecciona estadísticamente la mejor dirección para el próximo movimiento.
+    /// </summary>
+    /// <returns>La mejor nueva dirección (MovementDirection) hacia la celda Target calculada por distancia al cuadrado.</returns>
     private MovementDirection GetBestDirection(GameMap map, Player player, Ghost? blinky, bool isFrightened, bool isScatterMode)
     {
         var valid = GetValidDirections(map);
         var opposite = CurrentDirection.Opposite();
         
+        // Evitar que el fantasma gire en 'U' espontáneamente, regla del arcade original (salvo en ciertos cambios de modo)
         if (valid.Count > 1) valid.Remove(opposite);
         if (valid.Count == 0) return opposite;
 
-        // Usar la estrategia correspondiente
+        // Seleccionar la lógica dinámica de inteligencia correspondiente en base al estado del juego
         var strategy = isFrightened ? _frightenedStrategy : _chaseStrategy;
         var target = strategy.GetTarget(this, player, blinky, map, isScatterMode);
         
@@ -120,6 +154,7 @@ public class Ghost
             double nextTileX = (col + dx) * GameConstants.TileSize + GameConstants.TileSize / 2.0;
             double nextTileY = (row + dy) * GameConstants.TileSize + GameConstants.TileSize / 2.0;
 
+            // Análisis de Distancia Euclidiana (al cuadrado para ahorrar costos de raíz) para buscar el camino directo
             double dist = Math.Pow(nextTileX - target.x, 2) + Math.Pow(nextTileY - target.y, 2);
             if (dist < minDistance)
             {
@@ -131,6 +166,10 @@ public class Ghost
         return bestDir;
     }
 
+    /// <summary>
+    /// Mueve progresivamente al fantasma añadiendo su velocidad vectorial a su posición espacial.
+    /// </summary>
+    /// <returns>True si el muro estaba libre y avanzó, o False si hay pared interrumpiéndolo.</returns>
     private bool TryMove(MovementDirection direction, GameMap map)
     {
         var (dx, dy) = direction.ToVector();
@@ -147,6 +186,10 @@ public class Ghost
         return false;
     }
     
+    /// <summary>
+    /// Comprueba si el fantasma ha tocado los píxeles marginales de los márgenes derecho o izquierdo, 
+    /// reubicándolo cíclicamente al extremo opuesto imitando el efecto Pac-Man infinito.
+    /// </summary>
     private void HandleTunnels(GameMap map)
     {
         double rightEdge = map.PixelWidth;
@@ -160,6 +203,9 @@ public class Ghost
         }
     }
 
+    /// <summary>
+    /// Valida usando cuatro puntos cardinales alrededor del Sprite Box que la nueva coordenada no se interponga con paredes sólidas.
+    /// </summary>
     private bool CanMoveTo(double x, double y, GameMap map)
     {
         int ts = GameConstants.TileSize;
@@ -169,12 +215,18 @@ public class Ghost
                IsWalkable(x + ts - 1, y + ts - 1, map);
     }
 
+    /// <summary>
+    /// Convierte la coordenada píxel en un subíndice (fila/col) para consultar su existencia en la matriz Walkable del mapa.
+    /// </summary>
     private bool IsWalkable(double x, double y, GameMap map)
     {
         var (row, col) = map.PixelToTile(x, y);
         return map.IsWalkable(row, col);
     }
 
+    /// <summary>
+    /// Genera una lista completa que contiene únicamente las direcciones perimetrales accesibles que un fantasma podría tomar desde su posición de bloque actual.
+    /// </summary>
     private List<MovementDirection> GetValidDirections(GameMap map)
     {
         var list = new List<MovementDirection>();
@@ -192,24 +244,25 @@ public class Ghost
         return list;
     }
 
-    private bool IsCenteredOnTile()
+    /// <summary>
+    /// Ajusta bruscamente las coordenadas físicas del fantasma en X y Y para que encajen limpios en la cuadrícula sin sobrepasar floats decimales.
+    /// </summary>
+    private void SnapToGrid()
     {
-        double epsilon = 0.5;
-        double modX = X % GameConstants.TileSize;
-        double modY = Y % GameConstants.TileSize;
-        
-        // Check if we are close enough to 0 or close enough to TileSize
-        bool centeredX = (modX < epsilon) || (modX > GameConstants.TileSize - epsilon);
-        bool centeredY = (modY < epsilon) || (modY > GameConstants.TileSize - epsilon);
-        
-        return centeredX && centeredY;
+        X = Math.Round(X / GameConstants.TileSize) * GameConstants.TileSize;
+        Y = Math.Round(Y / GameConstants.TileSize) * GameConstants.TileSize;
     }
 
+    /// <summary>
+    /// Reinicia completamente las propiedades esenciales del fantasma para prepararlo en su punto de origen o posterior a una muerte.
+    /// </summary>
     public void Reset(double x, double y)
     {
         X = x;
         Y = y;
         IsEaten = false;
         CurrentDirection = MovementDirection.Left;
+        _lastProcessedRow = -1;
+        _lastProcessedCol = -1;
     }
 }

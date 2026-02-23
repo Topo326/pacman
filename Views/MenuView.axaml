@@ -25,5 +25,11 @@
                 Command="{Binding ExitCommand}" 
                 HorizontalAlignment="Stretch" 
                 HorizontalContentAlignment="Center"/>
+                
+        <ToggleButton Content="MUTE" 
+                      IsChecked="{Binding IsMuted}"
+                      Command="{Binding ToggleMuteCommand}" 
+                      HorizontalAlignment="Stretch" 
+                      HorizontalContentAlignment="Center"/>
     </StackPanel>
 </UserControl>

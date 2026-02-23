@@ -24,4 +24,14 @@ public interface ISoundService
     /// Reproduce el sonido de Pacman comiendo un fantasma.
     /// </summary>
     void PlayEatGhost();
+
+    /// <summary>
+    /// Reproduce el sonido de Pacman comiendo una fruta (pickup).
+    /// </summary>
+    void PlayEatFruit();
+
+    /// <summary>
+    /// Obtiene o establece un valor que indica si el sistema de sonido está silenciado.
+    /// </summary>
+    bool IsMuted { get; set; }
 }
